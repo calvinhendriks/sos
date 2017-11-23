@@ -59,18 +59,20 @@ void sortedcontainer_insert(sortedcontainer* sc, data* data) {
         node* temp = sc->root;
         while (true){
             if(temp->data->age > data->age){
-                if(sc->root->left == NULL){
-                    sc->root->left = temp;
+                if(temp->left == NULL){
+                    temp->left = n;
+                    printf("Adding to left");
                     break;
                 } else{
-                    temp = sc->root->left;
+                    temp = temp->left;
                 }
             } else if(temp->data->age <= data->age){
-                if(sc->root->right == NULL){
-                    sc->root->right = temp;
+                if(temp->right == NULL){
+                    temp->right = n;
+                    printf("Adding to right");
                     break;
                 } else{
-                    temp = sc->root->right;
+                    temp = temp->right;
                 }
             }
         }
