@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "sortedcontainer.h"
 
@@ -36,11 +37,11 @@ node* node_new(data* d) {
     n->left = NULL;
     n->right = NULL;
     return n;
-}    
+}
 
 void node_delete(node* n) {
     // Implement this
-    (void)n;
+    free(n);
 }
 
 sortedcontainer* sortedcontainer_new() {
@@ -51,6 +52,28 @@ sortedcontainer* sortedcontainer_new() {
 
 void sortedcontainer_insert(sortedcontainer* sc, data* data) {
     node* n = node_new(data);
+    if(sc->root == NULL) {
+        sc->root = n;
+    } else {
+        node* temp = sc->root;
+        while (true){
+            if(temp->data->age > data->age){
+                if(sc->root->data->left == NULL){
+                    sc->root->data->left = temp;
+                    break;
+                } else{
+                    temp = sc->root->data->left;
+                }
+            } else if(temp->data->age <= data->age){
+                if(sc->root->data->right == NULL){
+                    sc->root->data->right = temp;
+                    break;
+                } else{
+                    temp = sc->root->data->right;
+                }
+            }
+        }
+    }
     // Implement this
     (void)sc;
     (void)n;
