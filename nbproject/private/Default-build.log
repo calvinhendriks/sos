@@ -1,0 +1,12 @@
+Makefile:27: .depend: No such file or directory
+rm -f ./.depend
+gcc -std=c99 -Wall -Werror -pedantic -Wextra -g -O0 -MM sortedcontainer.c main.c test.c > ./.depend;
+gcc -c -std=c99 -Wall -Werror -pedantic -Wextra -g -O0 sortedcontainer.c -o sortedcontainer.o
+gcc -c -std=c99 -Wall -Werror -pedantic -Wextra -g -O0 main.c -o main.o
+main.c: In function ‘handle_command’:
+main.c:70:9: error: format not a string literal and no format arguments [-Werror=format-security]
+         fprintf(printFile, command);
+         ^
+cc1: all warnings being treated as errors
+Makefile:30: recipe for target 'main.o' failed
+make: *** [main.o] Error 1

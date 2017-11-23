@@ -1,0 +1,3 @@
+sortedcontainer.o: sortedcontainer.c sortedcontainer.h
+main.o: main.c sortedcontainer.h test.h
+test.o: test.c test.h sortedcontainer.h

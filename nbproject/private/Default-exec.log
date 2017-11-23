@@ -1,0 +1,45 @@
+called: /usr/bin/gcc
+	/home/calvin/Documents/SoS/Assignment 1/assignment1
+	gcc
+	-std=c99
+	-Wall
+	-Werror
+	-pedantic
+	-Wextra
+	-g
+	-O0
+	-MM
+	sortedcontainer.c
+	main.c
+	test.c
+
+called: gcc
+	/home/calvin/Documents/SoS/Assignment 1/assignment1
+	gcc
+	-c
+	-std=c99
+	-Wall
+	-Werror
+	-pedantic
+	-Wextra
+	-g
+	-O0
+	sortedcontainer.c
+	-o
+	sortedcontainer.o
+
+called: gcc
+	/home/calvin/Documents/SoS/Assignment 1/assignment1
+	gcc
+	-c
+	-std=c99
+	-Wall
+	-Werror
+	-pedantic
+	-Wextra
+	-g
+	-O0
+	main.c
+	-o
+	main.o
+
