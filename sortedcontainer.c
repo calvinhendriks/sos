@@ -61,7 +61,6 @@ void sortedcontainer_insert(sortedcontainer* sc, data* data) {
             if(temp->data->age > data->age){
                 if(temp->left == NULL){
                     temp->left = n;
-                    printf("Adding to left");
                     break;
                 } else{
                     temp = temp->left;
@@ -69,7 +68,6 @@ void sortedcontainer_insert(sortedcontainer* sc, data* data) {
             } else if(temp->data->age <= data->age){
                 if(temp->right == NULL){
                     temp->right = n;
-                    printf("Adding to right");
                     break;
                 } else{
                     temp = temp->right;
