@@ -52,6 +52,7 @@ sortedcontainer* sortedcontainer_new() {
 void sortedcontainer_insert(sortedcontainer* sc, data* data) {
     node* n = node_new(data);
     // Implement this
+    
     (void)sc;
     (void)n;
 }
