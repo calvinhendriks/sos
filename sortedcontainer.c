@@ -51,6 +51,9 @@ sortedcontainer* sortedcontainer_new() {
 }
 
 void sortedcontainer_insert(sortedcontainer* sc, data* data) {
+    if(data == NULL){
+        return;
+    }
     node* n = node_new(data);
     // Implement this
     if(sc->root == NULL) {

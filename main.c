@@ -27,8 +27,13 @@ void print_prompt(FILE* f) {
 data* read_data(char const* command) {
     int age;
     char name[NAME_LENGTH];
-    sscanf(command, "%*s %i %s", &age, name);
+    if(sscanf(command, "%*s %i %19s", &age, name) != 2){
+        printf("%s", "Invalid input\n");
+        return NULL;
+    }
     return data_new(age, name);
+    // Problem probably has to do with the case of no null terminator in name[NAME_LENGTH] and buffer overflow...
+    // Input larger than 19 (because number 20 must be null terminator, i think?) fixed by putting %19 and then s%
 }
 
 /**
@@ -43,34 +48,33 @@ data* read_data(char const* command) {
  */
 int handle_command(FILE* printFile, sortedcontainer* sc, char* command) {
     switch(*command) {
-    case 'i':
-        sortedcontainer_insert(sc, read_data(command));
-        break;
-    case 'e':
-        sortedcontainer_erase(sc, read_data(command));
-        break;
-    case 'c':
-        if(sortedcontainer_contains(sc, read_data(command))) {
-            fprintf(printFile, "y\n");
-        } else {
-            fprintf(printFile, "n\n");
+        case 'i':
+            sortedcontainer_insert(sc, read_data(command));
+            break;
+        case 'e':
+            sortedcontainer_erase(sc, read_data(command));
+            break;
+        case 'c':
+            if(sortedcontainer_contains(sc, read_data(command))) {
+                fprintf(printFile, "y\n");
+            } else {
+                fprintf(printFile, "n\n");
+            }
+            break;
+        case 'p':
+            sortedcontainer_print(sc, printFile);
+            break;
+        case 'x':
+            return 1;
+        case 't':
+            test(printFile);
+            break;
+        default: {
+            fprintf(printFile, "No such command: ");
+            fprintf(printFile, "%c", *command);
+            fprintf(printFile, "\n");
+            break;
         }
-        break;
-    case 'p':
-        sortedcontainer_print(sc, printFile);
-        break;
-    case 'x':
-        return 1;
-        break;
-    case 't':
-        test(printFile);
-        break;
-    default: {
-        fprintf(printFile, "No such command: ");
-        fprintf(printFile, "%c", *command);
-        fprintf(printFile, "\n");
-        break;
-    }
     }
     return 0;
 }
