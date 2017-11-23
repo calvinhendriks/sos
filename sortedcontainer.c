@@ -52,31 +52,29 @@ sortedcontainer* sortedcontainer_new() {
 
 void sortedcontainer_insert(sortedcontainer* sc, data* data) {
     node* n = node_new(data);
+    // Implement this
     if(sc->root == NULL) {
         sc->root = n;
     } else {
         node* temp = sc->root;
         while (true){
             if(temp->data->age > data->age){
-                if(sc->root->data->left == NULL){
-                    sc->root->data->left = temp;
+                if(sc->root->left == NULL){
+                    sc->root->left = temp;
                     break;
                 } else{
-                    temp = sc->root->data->left;
+                    temp = sc->root->left;
                 }
             } else if(temp->data->age <= data->age){
-                if(sc->root->data->right == NULL){
-                    sc->root->data->right = temp;
+                if(sc->root->right == NULL){
+                    sc->root->right = temp;
                     break;
                 } else{
-                    temp = sc->root->data->right;
+                    temp = sc->root->right;
                 }
             }
         }
     }
-    // Implement this
-    (void)sc;
-    (void)n;
 }
 
 int sortedcontainer_erase(sortedcontainer* sc, data* data) {
