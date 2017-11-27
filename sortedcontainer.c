@@ -61,20 +61,22 @@ void sortedcontainer_insert(sortedcontainer* sc, data* data) {
     } else {
         node* temp = sc->root;
         while (true){
-            if(temp->data->age > data->age){
+            if(data_compare(data, temp->data) < 0){
                 if(temp->left == NULL){
                     temp->left = n;
                     break;
                 } else{
                     temp = temp->left;
                 }
-            } else if(temp->data->age <= data->age){
+            } else if(data_compare(data, temp->data) > 0){
                 if(temp->right == NULL){
                     temp->right = n;
                     break;
                 } else{
                     temp = temp->right;
                 }
+            } else {
+                break;
             }
         }
     }
@@ -97,19 +99,19 @@ int sortedcontainer_contains(sortedcontainer* sc, data* data) {
     } else {
         node* temp = sc->root;
         while (true){
-            if(temp->data->age > data->age){
+            if(data_compare(data, temp->data) < 0){
                 if(temp->left == NULL){
                     return 0;
                 } else{
                     temp = temp->left;
                 }
-            } else if(temp->data->age <= data->age){
+            } else if(data_compare(data, temp->data) > 0){
                 if(temp->right == NULL){
                     return 0;
                 } else{
                     temp = temp->right;
                 }
-            } else if(temp->data->age == data->age && temp->data->name == data->name) {
+            } else {
                 return 1;
             }
         }
