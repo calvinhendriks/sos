@@ -105,8 +105,10 @@ char* read_command(FILE* in) {
         }
         inputMaxLength += INPUT_INCREMENT;
         input = realloc(input, sizeof(char) * inputMaxLength);
-        inputAt = input + incr - 1;
-        incr = inputMaxLength;
+        inputAt = input + inputMaxLength - INPUT_INCREMENT - 1;
+        //inputAt = input + incr - 1;
+        //incr = inputMaxLength;
+        incr = INPUT_INCREMENT + 1;
     } while(1);
     input[strlen(input)-1] = 0;
     return input;
