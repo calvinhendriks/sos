@@ -27,13 +27,12 @@ void print_prompt(FILE* f) {
 data* read_data(char const* command) {
     int age;
     char name[NAME_LENGTH];
-    if(sscanf(command, "%*s %i %19s", &age, name) != 2){
-        printf("%s", "Invalid input\n");
+    if(sscanf(command, "%*s %d %19s", &age, name) != 2){
+        printf("%s\n", "Invalid input");
         return NULL;
     }
+    name[19] = '\0';
     return data_new(age, name);
-    // Problem probably has to do with the case of no null terminator in name[NAME_LENGTH] and buffer overflow...
-    // Input larger than 19 (because number 20 must be null terminator, i think?) fixed by putting %19 and then s%
 }
 
 /**
@@ -106,8 +105,8 @@ char* read_command(FILE* in) {
         }
         inputMaxLength += INPUT_INCREMENT;
         input = realloc(input, sizeof(char) * inputMaxLength);
-        inputAt += incr - 1;
-        incr = INPUT_INCREMENT + 1;
+        inputAt = input + incr - 1;
+        incr = inputMaxLength;
     } while(1);
     input[strlen(input)-1] = 0;
     return input;

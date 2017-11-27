@@ -89,9 +89,31 @@ int sortedcontainer_erase(sortedcontainer* sc, data* data) {
 
 int sortedcontainer_contains(sortedcontainer* sc, data* data) {
     // Implement this
-    (void)sc;
-    (void)data;
-    return 0;
+    if(data == NULL){
+        return 0;
+    }
+    if(sc->root == NULL) {
+        return 0;
+    } else {
+        node* temp = sc->root;
+        while (true){
+            if(temp->data->age > data->age){
+                if(temp->left == NULL){
+                    return 0;
+                } else{
+                    temp = temp->left;
+                }
+            } else if(temp->data->age <= data->age){
+                if(temp->right == NULL){
+                    return 0;
+                } else{
+                    temp = temp->right;
+                }
+            } else if(temp->data->age == data->age && temp->data->name == data->name) {
+                return 1;
+            }
+        }
+    }
 }
 
 // Do not change
