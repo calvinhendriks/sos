@@ -105,7 +105,9 @@ node* findParent(sortedcontainer* sc, node* n){
     }
 }
 
-int sortedcontainer_erase(sortedcontainer* sc, data* nodeData) {
+// in sortedcontainer.h the function is defined as data* data and we changed this to nodeData to be able to say data* minData.
+
+int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
     // Implement this
     if(sortedcontainer_contains(sc, nodeData) != 1){
         return 0;
@@ -116,7 +118,7 @@ int sortedcontainer_erase(sortedcontainer* sc, data* nodeData) {
 
     // for case of 2 children
     node* min = NULL;
-    data* minData;
+    data* minData = NULL;
 
     while (true) {
         if (data_compare(nodeData, toDelete->data) < 0) {
@@ -263,4 +265,17 @@ static void node_deletetree(node* n) {
 void sortedcontainer_delete(sortedcontainer* sc) {
     node_deletetree(sc->root);
     free(sc);
+}
+
+static int node_issortedtree(node* n, data* min, data* max) {
+    if(n == NULL) return 1;
+
+    if(min && data_compare(n->data, min) < 0) return 0;
+    if(max && data_compare(max, n->data) < 0) return 0;
+
+    return node_issortedtree(n->left, min, n->data) && node_issortedtree(n->right, n->data, max);
+}
+
+int sortedcontainer_issorted(sortedcontainer* sc) {
+    return node_issortedtree(sc->root, NULL, NULL);
 }

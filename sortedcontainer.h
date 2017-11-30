@@ -70,7 +70,7 @@ void sortedcontainer_insert(sortedcontainer* sc, data* data);
  * @param data The data to be erased. Does NOT claim ownership of data
  * @return 0 iff no node was erased, 1 otherwise
  */
-int sortedcontainer_erase(sortedcontainer* sc, data* data);
+int sortedcontainer_erase(sortedcontainer* sc, data* nodeData);
 
 /**
  * @brief Checks whether or not the container contains element that is
