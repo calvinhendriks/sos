@@ -145,6 +145,11 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
             }
             switch (children) {
                 case 0:
+                    if(toDelete == sc->root){
+                        sc->root = NULL;
+                        node_delete(toDelete);
+                        return 1;
+                    }
                     // if the node to delete is on the left side of the parent
                     if (data_compare(toDelete->data, parent->data) < 0) {
                         parent->left = NULL;
