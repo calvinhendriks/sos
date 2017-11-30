@@ -82,11 +82,125 @@ void sortedcontainer_insert(sortedcontainer* sc, data* data) {
     }
 }
 
-int sortedcontainer_erase(sortedcontainer* sc, data* data) {
+node* findMinimum(node* node){
+    while(node->left != NULL){
+        node = node->left;
+    }
+    return node;
+}
+
+node* findParent(sortedcontainer* sc, node* n){
+    node* temp = sc->root;
+    node* parent = sc->root;
+    while(true){
+        if(data_compare(n->data, temp->data) < 0){
+            parent = temp;
+            temp = temp->left;
+        } else if(data_compare(n->data, temp->data) > 0){
+            parent = temp;
+            temp = temp->right;
+        } else {
+            return parent;
+        }
+    }
+}
+
+int sortedcontainer_erase(sortedcontainer* sc, data* nodeData) {
     // Implement this
-    (void)sc;
-    (void)data;
-    return 0;
+    if(sortedcontainer_contains(sc, nodeData) != 1){
+        return 0;
+    }
+
+    node* toDelete = sc->root;
+    node* parent = NULL;
+
+    // for case of 2 children
+    node* min = NULL;
+    data* minData;
+
+    while (true) {
+        if (data_compare(nodeData, toDelete->data) < 0) {
+            if (toDelete->left == NULL) {
+                return 0;
+            } else {
+                parent = toDelete;
+                toDelete = toDelete->left;
+            }
+        } else if (data_compare(nodeData, toDelete->data) > 0) {
+            if (toDelete->right == NULL) {
+                return 0;
+            } else {
+                parent = toDelete;
+                toDelete = toDelete->right;
+            }
+        } else {
+            // set amount of children
+            int children = 0;
+            if ((toDelete->left && !toDelete->right) || (!toDelete->left && toDelete->right)) {
+                children = 1;
+            } else if (toDelete->left && toDelete->right) {
+                children = 2;
+            }
+            switch (children) {
+                case 0:
+                    // if the node to delete is on the left side of the parent
+                    if (data_compare(toDelete->data, parent->data) < 0) {
+                        parent->left = NULL;
+                        node_delete(toDelete);
+                        return 1;
+                    } else {
+                        // if the node to delete is ont he right side of the parent
+                        parent->right = NULL;
+                        node_delete(toDelete);
+                        return 1;
+                    }
+                case 1:
+                    // if the node to delete is on the left side of the parent
+                    if (data_compare(toDelete->data, parent->data) < 0) {
+                        if (toDelete->left == NULL) {
+                            // set the parent right node to the right child of the node to delete
+                            parent->left = toDelete->right;
+                            node_delete(toDelete);
+                            return 1;
+                        } else {
+                            // set the parent right node to the left child of the node to delete
+                            parent->left = toDelete->left;
+                            node_delete(toDelete);
+                            return 1;
+                        }
+                    } else {
+                        // if the node to delete is ont he right side of the parent
+                        if (toDelete->left == NULL) {
+                            // set the parent right node to the right child of the node to delete
+                            parent->right = toDelete->right;
+                            node_delete(toDelete);
+                            return 1;
+                        } else {
+                            // set the parent right node to the left child of the node to delete
+                            parent->right = toDelete->left;
+                            node_delete(toDelete);
+                            return 1;
+                        }
+                    }
+                case 2:
+                    min = findMinimum(toDelete->right);
+                    minData = min->data;
+                    if(min->right){
+                        node* x = findParent(sc, min);
+                        x->left = min->right;
+                        node_delete(min);
+                        toDelete->data = minData;
+                        return 1;
+                    } else {
+                        node* x = findParent(sc, min);
+                        x->left = NULL;
+                        node_delete(min);
+                        toDelete->data = minData;
+                        return 1;
+                    }
+            }
+        }
+    }
 }
 
 int sortedcontainer_contains(sortedcontainer* sc, data* data) {
