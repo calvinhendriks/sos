@@ -27,10 +27,12 @@ void print_prompt(FILE* f) {
 data* read_data(char const* command) {
     int age;
     char name[NAME_LENGTH];
-    if(sscanf(command, "%*s %d %19s", &age, name) != 2){
+    char buff[30];
+    if(sscanf(command, "%*s %9d %29s", &age, buff) != 2 || strlen(buff) > 19 || age < 0){
         printf("%s\n", "Invalid input");
         return NULL;
     }
+    strncpy(name, buff, 20);
     name[19] = '\0';
     return data_new(age, name);
 }
@@ -106,8 +108,6 @@ char* read_command(FILE* in) {
         inputMaxLength += INPUT_INCREMENT;
         input = realloc(input, sizeof(char) * inputMaxLength);
         inputAt = input + inputMaxLength - INPUT_INCREMENT - 1;
-        //inputAt = input + incr - 1;
-        //incr = inputMaxLength;
         incr = INPUT_INCREMENT + 1;
     } while(1);
     input[strlen(input)-1] = 0;
