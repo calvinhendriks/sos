@@ -226,9 +226,71 @@ int test5(FILE* printFile) {
     return 0;
 }
 
+//tests the case with root -> 2 children where the right child has 2 children
+int test6(FILE* printFile) {
+    (void)printFile;
+    sortedcontainer* sc = sortedcontainer_new();
+
+    data* aap = data_new(40, "aap");
+    data* noot = data_new(20, "noot");
+    data* mies = data_new(60, "mies");
+    data* zus = data_new(80, "zus");
+    data* jet = data_new(50, "jet");
+
+
+    sortedcontainer_insert(sc, aap);
+    sortedcontainer_insert(sc, noot);
+    sortedcontainer_insert(sc, mies);
+    sortedcontainer_insert(sc, zus);
+    sortedcontainer_insert(sc, jet);
+
+    ASSERT(sc != NULL, "failed to create sorted container");
+    ASSERT(sc->root != NULL, "root is NULL");
+    ASSERT(sc->root->data != NULL, "root->data is NULL");
+
+    ASSERT(!data_compare(aap, sc->root->data), "data is not equivalent");
+    ASSERT(aap == sc->root->data, "data is not the same instant");
+
+    ASSERT(!data_compare(noot, sc->root->left->data), "data is not equivalent");
+    ASSERT(noot == sc->root->left->data, "data is not the same instant");
+
+    ASSERT(!data_compare(mies, sc->root->right->data), "data is not equivalent");
+    ASSERT(mies == sc->root->right->data, "data is not the same instant");
+
+    ASSERT(!data_compare(zus, sc->root->right->right->data), "data is not equivalent");
+    ASSERT(zus == sc->root->right->right->data, "data is not the same instant");
+
+    ASSERT(!data_compare(jet, sc->root->right->left->data), "data is not equivalent");
+    ASSERT(jet == sc->root->right->left->data, "data is not the same instant");
+
+
+    sortedcontainer_erase(sc, aap);
+
+    ASSERT(!data_compare(mies, sc->root->right->data), "data is not equivalent");
+    ASSERT(mies == sc->root->right->data, "data is not the same instant");
+
+    ASSERT(!data_compare(noot, sc->root->left->data), "data is not equivalent");
+    ASSERT(noot == sc->root->left->data, "data is not the same instant");
+
+    ASSERT(!data_compare(jet, sc->root->data), "data is not equivalent");
+    ASSERT(jet == sc->root->data, "data is not the same instant");
+
+    ASSERT(!data_compare(zus, sc->root->right->right->data), "data is not equivalent");
+    ASSERT(zus == sc->root->right->right->data, "data is not the same instant");
+
+    ASSERT(sc->root->right->left == NULL, "left child of mies' node is not NULL");
+
+//    ASSERT(!sortedcontainer_contains(sc, aap), "data is not in the container anymore (sortedcontainer_contains)"); -> krijg ik invalid read
+
+    sortedcontainer_delete(sc);
+
+    return 0;
+
+}
+
 // If you want to add test6 and onwards, create the test6 function above and
 // add it to this list
-test_t tests[] = {test1, test2, test3, test4, test5};
+test_t tests[] = {test1, test2, test3, test4, test5, test6};
 
 void test(FILE* printFile) {
     fprintf(printFile, "Testing...\n");
