@@ -239,7 +239,7 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
 int sortedcontainer_contains(sortedcontainer* sc, data* data) {
     // Implement this
     if(data == NULL){
-        return 0;
+        return -1;
     }
     if(sc->root == NULL) {
         return 0;

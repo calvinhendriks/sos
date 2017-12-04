@@ -56,7 +56,9 @@ int handle_command(FILE* printFile, sortedcontainer* sc, char* command) {
             sortedcontainer_erase(sc, read_data(command));
             break;
         case 'c':
-            if(sortedcontainer_contains(sc, read_data(command))) {
+            if(sortedcontainer_contains(sc, read_data(command)) == -1){
+                break;
+            } else if(sortedcontainer_contains(sc, read_data(command))) {
                 fprintf(printFile, "y\n");
             } else {
                 fprintf(printFile, "n\n");
