@@ -72,6 +72,7 @@ int test2(FILE* printFile) {
     return 0;
 }
 
+//delete node with 1 child
 int test3(FILE* printFile) {
     (void)printFile;
 
@@ -117,33 +118,39 @@ int test3(FILE* printFile) {
     return 0;
 }
 
+//delete node with 2 children (who have no children themselves)
 int test4(FILE* printFile) {
     (void)printFile;
-//
-//    sortedcontainer* sc = sortedcontainer_new();
-//
-//    data* aap = data_new(10, "aap");
-//    data* noot = data_new(20, "noot");
-//    data* mies = data_new(8, "mies");
-//
-//    sortedcontainer_insert(sc, aap);
-//    sortedcontainer_insert(sc, noot);
-//    sortedcontainer_insert(sc, mies);
-//
-//    // Add a test in the style of test3 to test the deletion of a node with
-//    // two children
-//    ASSERT(sc != NULL, "failed to create sorted container");
-//    ASSERT(sc->root->left != NULL, "failed to add mies");
-//    ASSERT(sc->root->right != NULL, "failed to add noot");
-//
-//    //sortedcontainer_erase(sc, aap);
-//    ASSERT(!data_compare(noot,sc->root->data), "data is not equivalent");
-//    ASSERT(!data_compare(mies,sc->root->left->data), "data is not equivalent");
-//    ASSERT(sc->root->right == NULL, "Right node is not NULL");
-//
-//    //ASSERT(sortedcontainer_issorted(sc) != 0, "Tree is not sorted after deletion");
-//
-//    sortedcontainer_delete(sc);
+
+    sortedcontainer* sc = sortedcontainer_new();
+
+    data* aap = data_new(10, "aap");
+    data* noot = data_new(20, "noot");
+    data* mies = data_new(8, "mies");
+
+    sortedcontainer_insert(sc, aap);
+    sortedcontainer_insert(sc, noot);
+    sortedcontainer_insert(sc, mies);
+
+    // Add a test in the style of test3 to test the deletion of a node with
+    // two children
+    ASSERT(sc != NULL, "failed to create sorted container");
+    ASSERT(sc->root->left != NULL, "failed to add mies");
+    ASSERT(sc->root->right != NULL, "failed to add noot");
+
+    sortedcontainer_erase(sc, aap);
+    
+    ASSERT(!data_compare(noot,sc->root->data), "data is not equivalent");
+    ASSERT(noot == sc->root->data, "data is not the same instant");
+    
+    ASSERT(!data_compare(mies,sc->root->left->data), "data is not equivalent");
+    ASSERT(mies == sc->root->left->data, "data is not the same instant");
+    
+    ASSERT(sc->root->right == NULL, "Right node is not NULL");
+
+    ASSERT(sortedcontainer_issorted(sc) != 0, "Tree is not sorted after deletion");
+
+    sortedcontainer_delete(sc);
     return 0;
 }
 
@@ -163,7 +170,7 @@ int test5(FILE* printFile) {
     sortedcontainer_insert(sc, aap);
     sortedcontainer_insert(sc, noot);
     sortedcontainer_insert(sc, mies);
-     sortedcontainer_insert(sc, wim);
+    sortedcontainer_insert(sc, wim);
     sortedcontainer_insert(sc, zus);
     sortedcontainer_insert(sc, jet);
     sortedcontainer_insert(sc, teun);
@@ -221,14 +228,95 @@ int test5(FILE* printFile) {
     ASSERT(sortedcontainer_contains(sc, noot), "data is not in the container anymore (sortedcontainer_contains)");
     ASSERT(sortedcontainer_contains(sc, jet), "data is not in the container anymore (sortedcontainer_contains)");
     ASSERT(sortedcontainer_contains(sc, teun), "data is not in the container anymore (sortedcontainer_contains)");
+    //ASSERT(!sortedcontainer_contains(sc, aap), "data is not in the container anymore (sortedcontainer_contains)");
+    ASSERT(sortedcontainer_issorted(sc) != 0, "Tree is not sorted after deletion");
+    
     sortedcontainer_delete(sc);
 
     return 0;
 }
 
+int test7(FILE* printFile) {
+    // Add a test in the style of test3 to test the deletion of a node with
+    // two children, who each have two children as well
+    sortedcontainer* sc = sortedcontainer_new();
+
+    data* aap = data_new(40, "aap");
+    data* noot = data_new(20, "noot");
+    data* mies = data_new(60, "mies");    
+    data* zus = data_new(80, "zus");
+    data* jet = data_new(50, "jet");
+    data* wim = data_new(55, "wim");
+
+    sortedcontainer_insert(sc, aap);
+    sortedcontainer_insert(sc, noot);
+    sortedcontainer_insert(sc, mies);
+    sortedcontainer_insert(sc, zus);      
+    sortedcontainer_insert(sc, jet);
+    sortedcontainer_insert(sc, wim);  
+    
+
+    ASSERT(sc != NULL, "failed to create sorted container");
+    ASSERT(sc->root != NULL, "root is NULL");
+    ASSERT(sc->root->data != NULL, "root->data is NULL");
+
+    ASSERT(!data_compare(aap, sc->root->data), "data is not equivalent");
+    ASSERT(aap == sc->root->data, "data is not the same instant");
+
+    ASSERT(!data_compare(noot, sc->root->left->data), "data is not equivalent");
+    ASSERT(noot == sc->root->left->data, "data is not the same instant");
+
+    ASSERT(!data_compare(mies, sc->root->right->data), "data is not equivalent");
+    ASSERT(mies == sc->root->right->data, "data is not the same instant");  
+    
+     ASSERT(!data_compare(zus, sc->root->right->right->data), "data is not equivalent");
+    ASSERT(zus == sc->root->right->right->data, "data is not the same instant");
+    
+    ASSERT(!data_compare(jet, sc->root->right->left->data), "data is not equivalent");
+    ASSERT(jet == sc->root->right->left->data, "data is not the same instant");
+    
+     ASSERT(!data_compare(wim, sc->root->right->left->right->data), "data is not equivalent");
+    ASSERT(wim == sc->root->right->left->right->data, "data is not the same instant");
+
+    sortedcontainer_erase(sc, aap);
+
+    ASSERT(!data_compare(jet, sc->root->data), "data is not equivalent");
+    ASSERT(jet == sc->root->data, "data is not the same instant");
+
+    ASSERT(!data_compare(mies, sc->root->right->data), "data is not deleted");
+    ASSERT(mies == sc->root->right->data, "data is not deleted");    
+   
+    ASSERT(!data_compare(zus, sc->root->right->right->data), "data is not equivalent");
+    ASSERT(zus == sc->root->right->right->data, "data is not the same instant");
+    
+    ASSERT(!data_compare(noot, sc->root->left->data), "data is not equivalent");
+    ASSERT(noot == sc->root->left->data, "data is not the same instant");
+    
+    ASSERT(!data_compare(wim, sc->root->right->left->data), "data is not equivalent");
+    ASSERT(wim == sc->root->right->left->data, "data is not the same instant");
+    
+    ASSERT(sc->root->right->left->right == NULL, "right child of wim' node is not NULL");
+    ASSERT(sc->root->right->left->left == NULL, "left child of wim' node is not NULL");
+
+    ASSERT(sortedcontainer_contains(sc, wim), "data is not in the container anymore (sortedcontainer_contains)");
+    ASSERT(sortedcontainer_contains(sc, mies), "data is not in the container anymore (sortedcontainer_contains)");
+    ASSERT(sortedcontainer_contains(sc, zus), "data is not in the container anymore (sortedcontainer_contains)");
+    ASSERT(sortedcontainer_contains(sc, noot), "data is not in the container anymore (sortedcontainer_contains)");
+    ASSERT(sortedcontainer_contains(sc, jet), "data is not in the container anymore (sortedcontainer_contains)");
+    
+    //ASSERT(!sortedcontainer_contains(sc, aap), "data is not in the container anymore (sortedcontainer_contains)");
+    
+    ASSERT(sortedcontainer_issorted(sc) != 0, "Tree is not sorted after deletion");
+    
+    sortedcontainer_delete(sc);
+
+    return 0;
+}
+
+
 // If you want to add test6 and onwards, create the test6 function above and
 // add it to this list
-test_t tests[] = {test1, test2, test3, test4, test5};
+test_t tests[] = {test1, test2, test3, test4, test5, test7};
 
 void test(FILE* printFile) {
     fprintf(printFile, "Testing...\n");
