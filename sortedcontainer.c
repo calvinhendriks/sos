@@ -287,6 +287,7 @@ static void node_deletetree(node* n) {
     if(n) {
         node* left = n->left;
         node* right = n->right;
+        data_delete(n->data);
         node_delete(n);
         node_deletetree(left);
         node_deletetree(right);
