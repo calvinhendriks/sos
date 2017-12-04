@@ -163,6 +163,17 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                     }
                 case 1:
                     // if the node to delete is on the left side of the parent
+                    if(toDelete == sc->root){
+                        if (toDelete->left == NULL) {
+                            sc->root = toDelete->right;
+                            node_delete(toDelete);
+                            return 1;
+                        } else {
+                            sc->root = toDelete->left;
+                            node_delete(toDelete);
+                            return 1;
+                        }
+                    }
                     if (data_compare(toDelete->data, parent->data) < 0) {
                         if (toDelete->left == NULL) {
                             // set the parent right node to the right child of the node to delete
@@ -192,7 +203,12 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                 case 2:
                     min = findMinimum(toDelete->right);
                     minData = min->data;
-                    if(min->right){
+                    if(toDelete->right == min){
+                        toDelete->data = min->data;
+                        toDelete->right = min->right;
+                        node_delete(min);
+                        return 1;
+                    } else if(min->right){
                         node* x = findParent(sc, min);
                         x->left = min->right;
                         node_delete(min);
@@ -200,7 +216,7 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                         return 1;
                     } else {
                         node* x = findParent(sc, min);
-                        x->right = NULL;
+                        x->left = NULL;
                         node_delete(min);
                         toDelete->data = minData;
                         return 1;
