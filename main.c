@@ -134,12 +134,15 @@ int main(int argc, char* argv[]) {
 
         char* command = read_command(stdin);
         if(command == NULL) {
+            free(command);
             break;
         }
 
         if(handle_command(stdout, sc, command)) {
+            free(command);
             break;
         }
+        free(command);
     }
 
     sortedcontainer_delete(sc);
