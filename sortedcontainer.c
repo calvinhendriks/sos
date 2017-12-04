@@ -211,6 +211,7 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                 case 2:
                     min = findMinimum(toDelete->right);
                     if(toDelete->right == min){
+                        data_delete(toDelete->data);
                         toDelete->data = min->data;
                         toDelete->right = min->right;
                         node_delete(min);
@@ -218,12 +219,14 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                     } else if(min->right){
                         node* x = findParent(sc, min);
                         x->left = min->right;
+                        data_delete(toDelete->data);
                         toDelete->data = min->data;
                         node_delete(min);
                         return 1;
                     } else {
                         node* x = findParent(sc, min);
                         x->left = NULL;
+                        data_delete(toDelete->data);
                         toDelete->data = min->data;
                         node_delete(min);
                         return 1;
