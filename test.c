@@ -351,23 +351,22 @@ int test6(FILE* printFile) {
     ASSERT(jet == sc->root->right->left->data, "data is not the same instant");
 
 
-    sortedcontainer_erase(sc, aap);
+    sortedcontainer_erase(sc, noot);
+
+    ASSERT(sc->root->left == NULL, "left child of mies' node is not NULL");
+
+    ASSERT(!data_compare(aap, sc->root->data), "data is not equivalent");
+    ASSERT(aap == sc->root->data, "data is not the same instant");
 
     ASSERT(!data_compare(mies, sc->root->right->data), "data is not equivalent");
     ASSERT(mies == sc->root->right->data, "data is not the same instant");
 
-    ASSERT(!data_compare(noot, sc->root->left->data), "data is not equivalent");
-    ASSERT(noot == sc->root->left->data, "data is not the same instant");
-
-    ASSERT(!data_compare(jet, sc->root->data), "data is not equivalent");
-    ASSERT(jet == sc->root->data, "data is not the same instant");
-
     ASSERT(!data_compare(zus, sc->root->right->right->data), "data is not equivalent");
     ASSERT(zus == sc->root->right->right->data, "data is not the same instant");
 
-    ASSERT(sc->root->right->left == NULL, "left child of mies' node is not NULL");
-
-//    ASSERT(!sortedcontainer_contains(sc, aap), "data is not in the container anymore (sortedcontainer_contains)"); -> krijg ik invalid read
+    ASSERT(!data_compare(jet, sc->root->right->left->data), "data is not equivalent");
+    ASSERT(jet == sc->root->right->left->data, "data is not the same instant");
+    ASSERT(sortedcontainer_issorted(sc) != 0, "Tree is not sorted after deletion");
 
     sortedcontainer_delete(sc);
 
