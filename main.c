@@ -88,6 +88,7 @@ int handle_command(FILE* printFile, sortedcontainer* sc, char* command) {
  * TO FIX:
  *   There are two separate problems in this function. Fix these problems
  *   by only changing TWO lines in total.
+ *   Changed input because realloc might change the place of the memory address
  */
 char* read_command(FILE* in) {
     int inputMaxLength = 0;
@@ -121,7 +122,7 @@ char* read_command(FILE* in) {
  * @return 0
  *
  * TO FIX:
- *   One issue needs to be fixed here.
+ *   One issue needs to be fixed here. free(command) was het probleem
  */
 int main(int argc, char* argv[]) {
     (void)argc;
