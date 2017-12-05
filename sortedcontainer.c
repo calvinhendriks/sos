@@ -143,6 +143,7 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                 children = 2;
             }
             switch (children) {
+                //Case 0: No to be deleted has 0 children (leaf node)
                 case 0:
                     if(toDelete == sc->root){
                         sc->root = NULL;
@@ -163,8 +164,9 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                         node_delete(toDelete);
                         return 1;
                     }
+                //Case 1: node to be deleted has 1 child 
                 case 1:
-                    // if the node to delete is on the left side of the parent
+                    
                     if(toDelete == sc->root){
                         if (toDelete->left == NULL) {
                             sc->root = toDelete->right;
@@ -178,6 +180,7 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                             return 1;
                         }
                     }
+                    // if the node to delete is on the left side of the parent
                     if (data_compare(toDelete->data, parent->data) < 0) {
                         if (toDelete->left == NULL) {
                             // set the parent right node to the right child of the node to delete
@@ -208,15 +211,18 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                             return 1;
                         }
                     }
+                //Case 2: Node to be deleted has 2 children.
                 case 2:
                     min = findMinimum(toDelete->right);
                     if(toDelete->right == min){
+                        //If the minimum value of the right subtree is directly connected to the node to be deleted.
                         data_delete(toDelete->data);
                         toDelete->data = min->data;
                         toDelete->right = min->right;
                         node_delete(min);
                         return 1;
                     } else if(min->right){
+                        //If the minimum node of the rigth subtree has any children (can only be right children, because it is already minimum)
                         node* x = findParent(sc, min);
                         x->left = min->right;
                         data_delete(toDelete->data);
@@ -224,6 +230,7 @@ int sortedcontainer_erase(sortedcontainer* sc, data *nodeData) {
                         node_delete(min);
                         return 1;
                     } else {
+                        //If the minimum node has no children.
                         node* x = findParent(sc, min);
                         x->left = NULL;
                         data_delete(toDelete->data);
