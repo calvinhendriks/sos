@@ -50,20 +50,36 @@ data* read_data(char const* command) {
 int handle_command(FILE* printFile, sortedcontainer* sc, char* command) {
     switch(*command) {
         case 'i':
-            sortedcontainer_insert(sc, read_data(command));
-            break;
-        case 'e':
-            sortedcontainer_erase(sc, read_data(command));
-            break;
-        case 'c':
-            if(sortedcontainer_contains(sc, read_data(command)) == -1){
+            {
+                data* d = read_data(command);
+                if(sortedcontainer_contains(sc, d)){
+                    free(d);
+                    break;
+                } else {
+                    sortedcontainer_insert(sc, d);
+                }
                 break;
-            } else if(sortedcontainer_contains(sc, read_data(command))) {
-                fprintf(printFile, "y\n");
-            } else {
-                fprintf(printFile, "n\n");
             }
-            break;
+        case 'e':
+            {
+                data* d = read_data(command);
+                sortedcontainer_erase(sc, d);
+                free(d);
+                break;
+            }
+        case 'c':
+            {
+                data* d = read_data(command);
+                if(sortedcontainer_contains(sc, d) == -1){
+                    break;
+                } else if(sortedcontainer_contains(sc, d)) {
+                    fprintf(printFile, "y\n");
+                } else {
+                    fprintf(printFile, "n\n");
+                }
+                free(d);
+                break;
+            }
         case 'p':
             sortedcontainer_print(sc, printFile);
             break;
@@ -113,7 +129,9 @@ char* read_command(FILE* in) {
         inputAt = input + inputMaxLength - INPUT_INCREMENT - 1;
         incr = INPUT_INCREMENT + 1;
     } while(1);
-    input[strlen(input)-1] = 0;
+    if(strlen(input) != 0) {
+        input[strlen(input)-1] = 0;
+    }
     return input;
 }
 
