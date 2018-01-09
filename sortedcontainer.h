@@ -93,3 +93,5 @@ void sortedcontainer_print(sortedcontainer* sc, FILE* printFile);
  * @param sc The sortedcontainer to delete
  */
 void sortedcontainer_delete(sortedcontainer* sc);
+
+int sortedcontainer_issorted(sortedcontainer* sc);
