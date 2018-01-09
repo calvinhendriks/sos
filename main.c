@@ -28,7 +28,7 @@ data* read_data(char const* command) {
     int age;
     char name[NAME_LENGTH];
     char buff[30];
-    if(sscanf(command, "%*s %9d %29s", &age, buff) != 2 || strlen(buff) > 19 || age < 0){
+    if(sscanf(command, "%*s %d %29s", &age, buff) != 2 || strlen(buff) > 19 || age < 0){
         printf("%s\n", "Invalid input");
         return NULL;
     }
@@ -52,12 +52,7 @@ int handle_command(FILE* printFile, sortedcontainer* sc, char* command) {
         case 'i':
             {
                 data* d = read_data(command);
-                if(sortedcontainer_contains(sc, d)){
-                    free(d);
-                    break;
-                } else {
-                    sortedcontainer_insert(sc, d);
-                }
+                sortedcontainer_insert(sc, d);
                 break;
             }
         case 'e':

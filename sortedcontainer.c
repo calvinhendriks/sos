@@ -76,7 +76,10 @@ void sortedcontainer_insert(sortedcontainer* sc, data* data) {
                     temp = temp->right;
                 }
             } else {
+                data_delete(data);
+                node_delete(n);
                 break;
+
             }
         }
     }
