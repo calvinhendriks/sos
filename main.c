@@ -28,9 +28,23 @@ data* read_data(char const* command) {
     int age;
     char name[NAME_LENGTH];
     char buff[30];
-    if(sscanf(command, "%*s %d %29s", &age, buff) != 2 || strlen(buff) > 19 || age < 0){
+    char num[20];
+    if(sscanf(command, "%*s %19s %29s", num, buff) != 2 || strlen(num) > 10 || strlen(buff) > 19){
         printf("%s\n", "Invalid input");
         return NULL;
+    }
+    if(strspn(num, "0123456789") != strlen(num)){
+        printf("%s\n", "Invalid input");
+        return NULL;
+    }
+    long err = 0;
+    char *ptr;
+    err = strtol(num, &ptr, 10);
+    if(err > 2147483647 || err < 0){
+        printf("%s\n", "Invalid input");
+        return NULL;
+    } else {
+        age = err;
     }
     strncpy(name, buff, 20);
     name[19] = '\0';
